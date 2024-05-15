@@ -19,16 +19,16 @@ INSERT INTO roles (title, salary, department_id) VALUES
 ('Senior Design Associate', 180000.00, 4),
 ('Junior Design Associate', 85000.00, 4);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
+INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES
 
-('Arnold', 'Schwarzenagger', 1, 1),
+('Arnold', 'Schwarzenagger', 1, NULL),
 ('Danny', 'Devito', 2, 1),
-('Halle', 'Berry', 3, 3),
+('Halle', 'Berry', 3, NULL ),
 ('Keanu', 'Reaves', 4, 3),
 ('Brad', 'Pitt', 5, 3),
-('Samuel', 'Jackson', 6, 6),
+('Samuel', 'Jackson', 6, NULL ),
 ('Wynona', 'Ryder', 7, 6),
 ('Ryan','Reynolds', 8, 6),
-('Emma', 'Stone', 9, 9),
+('Emma', 'Stone', 9, NULL),
 ('Jack', 'Black', 10, 9),
 ('Karen', 'Gillen', 11, 9);
