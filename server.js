@@ -18,8 +18,8 @@ const database = mysql.createConnection(
     password: 'Kilimanjaro1776',
     database: 'employeeTracker_db'
   },
-  console.log(`Connected to employeeInfo_db`)
-);
+  console.log(`Connected to employeeInfo_db`));
+
 
 
 const question =
@@ -132,7 +132,7 @@ function addRole() {
 
       if (responses.roleDepartment === 'Executive') {
         newDepartment = 1;
-      } 
+      }
       else if (responses.roleDepartment === 'Marketing') {
         newDepartment = 2;
       }
@@ -146,7 +146,7 @@ function addRole() {
         newDepartment = 5;
       }
 
-      
+
       const query = 'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)';
       const values = [newTitle, newSalary, newDepartment];
 
@@ -167,7 +167,7 @@ function addRole() {
 
 
 
-// Function for adding a 
+// Function for adding an Employee
 function addEmployee() {
 
   inquirer.prompt([
@@ -218,11 +218,58 @@ function addEmployee() {
       var employeeFirst = responses.employeeFirst;
       var employeeLast = responses.employeeLast;
       var employeeRole = responses.employeeRole;
-      var employeeManager= 0;
+      var employeeManager = 0;
+
+      switch (employeeRole) {
+
+        case 'CEO':
+          employeeRole = 1;
+          break;
+
+        case 'CFO':
+          employeeRole = 2;
+          break;
+
+        case 'Head of Marketing':
+          employeeRole = 3;
+          break;
+
+        case 'Senior Marketing Associate':
+          employeeRole = 4;
+          break;
+
+        case 'Junior Marketing Associate':
+          employeeRole = 5;
+          break;
+
+        case 'Head of Sales':
+          employeeRole = 6;
+          break;
+
+        case 'Senior Sales Associate':
+          employeeRole = 7;
+          break;
+
+        case 'Junior Sales Associate':
+          employeeRole = 8;
+          break;
+
+        case 'Head of Design':
+          employeeRole = 9;
+          break;
+
+        case 'Senior Design Associate':
+          employeeRole = 10;
+          break;
+
+        case 'Junior Design Associate':
+          employeeRole = 11;
+          break;
+      }
 
       if (responses.employeeManager === 'Executive') {
-         employeeManager= 1;
-      } 
+        employeeManager = 1;
+      }
       else if (responses.employeeManager === 'Marketing') {
         employeeManager = 3;
       }
@@ -235,9 +282,9 @@ function addEmployee() {
       else {
         employeeManager = 1;
       }
-      
+
       const query = 'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
-      const values = [employeeFirst, employeeLast , employeeRole ,employeeManager];
+      const values = [employeeFirst, employeeLast, employeeRole, employeeManager];
 
       // Executing the query with parameterized values
       database.query(query, values, function (err, result) {
@@ -245,36 +292,17 @@ function addEmployee() {
           console.error("Error adding new role:", err);
           return;
         }
-
-        
-        console.log("New Role Added");
+        console.log("New Employee Added");
         init();
       });
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function updateRole() {
-
+console.log("Functionality not added yet");
+init();
 }
+
 
 function quit() {
   console.log("Until next time!");
@@ -339,3 +367,6 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
