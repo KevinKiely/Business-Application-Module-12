@@ -101,6 +101,21 @@ function addDepartment() {
 
 // Function for adding a role to the roles table
 function addRole() {
+
+database.query( 'SELECT * FROM departments;', function (err, results) {
+  if (err) {
+    console.log(`Error: ${err}`);
+  }
+
+  //  let departmentChoices = results.map(function ({ id, department_name}) {
+    let departmentChoices = results.map(function (elem) {
+      
+      return {
+        name: elem.department_name,
+        value: elem.id
+      }
+    });
+
   inquirer.prompt([
     {
       type: "input",
@@ -116,35 +131,14 @@ function addRole() {
       type: "list",
       name: "roleDepartment",
       message: "Please select the department to which the new role will belong",
-      choices: [
-        'Executive',
-        'Marketing',
-        'Sales',
-        'Design',
-        'Other',
-      ]
+      choices: departmentChoices
     },
   ])
     .then((responses) => {
       var newTitle = responses.roleTitle;
       var newSalary = responses.roleSalary;
-      var newDepartment = 0;
-
-      if (responses.roleDepartment === 'Executive') {
-        newDepartment = 1;
-      }
-      else if (responses.roleDepartment === 'Marketing') {
-        newDepartment = 2;
-      }
-      else if (responses.roleDepartment === 'Sales') {
-        newDepartment = 3;
-      }
-      else if (responses.roleDepartment === 'Design') {
-        newDepartment = 4;
-      }
-      else {
-        newDepartment = 5;
-      }
+      var newDepartment = responses.roleDepartment;
+      console.log(newDepartment);
 
 
       const query = 'INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)';
@@ -162,6 +156,7 @@ function addRole() {
         init();
       });
     });
+  });
 }
 
 
@@ -169,6 +164,23 @@ function addRole() {
 
 // Function for adding an Employee
 function addEmployee() {
+  
+  // we will first want to query for additional information --> role Table data
+  database.query("select * from roles;", function(err, results) {
+    if(err) {
+      console.log("error: ", err);
+    } 
+
+   // console.log("data: ", results);
+
+    let rolesChoices = results.map(function({ id, title }) {
+      let tempData = {
+        name: title,
+        value: id
+      }
+      return tempData
+    });
+   // console.log("Roles: ", rolesChoices);  // [{ name: 'CEO', value: 1, {}, {}]
 
   inquirer.prompt([
     {
@@ -185,20 +197,8 @@ function addEmployee() {
       type: "list",
       name: "employeeRole",
       message: "Please select the role to which the new employee will be assigned",
-      choices: [
-        'CEO',
-        'CFO',
-        'Head of Marketing',
-        'Senior Marketing Associate',
-        'Junior Marketing Associate',
-        'Head of Sales',
-        'Senior Sales Associate',
-        'Junior Sales Associate',
-        'Head of Design',
-        'Senior Design Associate',
-        'Junior Design Associate',
-        'Other',
-      ]
+      choices: rolesChoices
+     
     },
     {
       type: "list",
@@ -215,57 +215,13 @@ function addEmployee() {
 
   ])
     .then((responses) => {
+      console.log("Response: ", responses)
       var employeeFirst = responses.employeeFirst;
       var employeeLast = responses.employeeLast;
       var employeeRole = responses.employeeRole;
       var employeeManager = 0;
+      console.log("Roles Result: ", employeeRole)
 
-      switch (employeeRole) {
-
-        case 'CEO':
-          employeeRole = 1;
-          break;
-
-        case 'CFO':
-          employeeRole = 2;
-          break;
-
-        case 'Head of Marketing':
-          employeeRole = 3;
-          break;
-
-        case 'Senior Marketing Associate':
-          employeeRole = 4;
-          break;
-
-        case 'Junior Marketing Associate':
-          employeeRole = 5;
-          break;
-
-        case 'Head of Sales':
-          employeeRole = 6;
-          break;
-
-        case 'Senior Sales Associate':
-          employeeRole = 7;
-          break;
-
-        case 'Junior Sales Associate':
-          employeeRole = 8;
-          break;
-
-        case 'Head of Design':
-          employeeRole = 9;
-          break;
-
-        case 'Senior Design Associate':
-          employeeRole = 10;
-          break;
-
-        case 'Junior Design Associate':
-          employeeRole = 11;
-          break;
-      }
 
       if (responses.employeeManager === 'Executive') {
         employeeManager = 1;
@@ -296,6 +252,7 @@ function addEmployee() {
         init();
       });
     });
+  });  // end of role Query Async Function
 }
 
 function updateRole() {
